@@ -1,5 +1,6 @@
 from initial_access import ValidAccounts
 
+from execution import CommandAndScripting
 from execution import Execution
 
 import json
@@ -18,7 +19,9 @@ def initial_access_run():
 
 def main():
     # initial_access_run()
-    Execution.T1609()
+    # Execution.T1609()
+    cas = CommandAndScripting()
+    cas.T1059_001()
 
 
 if __name__ == '__main__':
