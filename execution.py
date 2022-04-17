@@ -1,3 +1,4 @@
+from datetime import datetime
 import subprocess
 import os
 
@@ -5,7 +6,6 @@ import os
 POWERSHELL_COMMAND = [
     'echo Get-ExecutionPolicy > t1059_001.ps1 && powershell .\\t1059_001.ps1'
 ]
-
 
 class CommandAndScripting:
 
@@ -80,6 +80,39 @@ class Execution:
     def __init__(self):
         pass
 
+    def T1053_002(self):
+        current_time = datetime.now()
+        cmd = 'schtasks /create /tn "test" /tr C:\\Windows\\System32\\cmd.exe /sc once /sd {0}/{1}/{2} /st {3}:{4}'.format(
+            current_time.year, current_time.month, current_time.day, current_time.hour, current_time.minute + 3
+        )
+
+        result = subprocess.Popen(cmd.split(' '), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
+        result = result.decode('utf-8').split('\r\n')
+
+        for i in result:
+            print(i)
+
+    def T1053_005(self):
+        cmd = 'schtasks /query /fo LIST /v'
+
+        result = subprocess.Popen(cmd.split(' '), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
+        result = result.decode('utf-8').split('\r\n')
+
+        for i in result:
+            print(i)
+
+    def T1569_002(self):
+        cmd = 'sc create test type=own binPath="C:\Windows\System32\cmd.exe'
+        
+        result = subprocess.Popen(cmd.split(' '), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
+        result = result.decode('utf-8').split('\r\n')
+
+        for i in result:
+            print(i)
+
+    def T1599_001(self):
+        pass
+
     def T1609(self):
         COMMAND_LIST = ['docker ps']
 
@@ -91,5 +124,3 @@ class Execution:
             for i in result:
                 print(i)
     
-    def T1599(self):
-        pass

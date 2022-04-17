@@ -1,5 +1,4 @@
 from initial_access import ValidAccounts
-
 from execution import CommandAndScripting
 from execution import Execution
 
@@ -17,11 +16,27 @@ def initial_access_run():
     va.T1078_003()
 
 
-def main():
-    # initial_access_run()
-    # Execution.T1609()
+def execution_run():
     cas = CommandAndScripting()
     cas.T1059_001()
+    cas.T1059_003()
+    cas.T1059_005()
+    cas.T1059_006()
+
+    exe = Execution()
+    exe.T1053_002()
+    exe.T1053_005()
+
+    exe.T1569_002()
+
+    exe.T1599_001()
+    
+    exe.T1609()
+
+
+def main():
+    initial_access_run()
+    execution_run() 
 
 
 if __name__ == '__main__':
