@@ -72,13 +72,32 @@ class CommandAndScripting:
         result = result.deocde('utf-8').split('\r\n')[0]
 
         if result == ('A' * 10):
-            print(f'[+] {cmd}') 
+            print(f'[+] {cmd}')
+        else:
+            print(f'[-] {cmd}')
 
        
 class Execution:
 
     def __init__(self):
         pass
+    
+    def T1047(self):
+        cmd_list = [
+            'wmic computersystem get Name, Model, Domain, Manufacturer, Description',
+            'wmic environment list',
+            'wmic useraccount list',
+            'wmic qfe list'
+        ]
+
+        for cmd in cmd_list:
+            result = subprocess.Popen(cmd.split(' '), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
+            result = result.decode('utf-8').split('\r\n')
+
+            print(f'[+] {cmd}')
+            for i in result:
+                print(i)
+            print()
 
     def T1053_002(self):
         current_time = datetime.now()

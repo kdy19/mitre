@@ -24,6 +24,9 @@ def execution_run():
     cas.T1059_006()
 
     exe = Execution()
+
+    exe.T1047()
+
     exe.T1053_002()
     exe.T1053_005()
 
