@@ -33,7 +33,7 @@ class Execution:
     def __init__(self):
         pass
 
-    def command_run(cmd):
+    def self.command_run(cmd):
         result = subprocess.Popen(cmd.split(' '), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
         try:
             result = result.decode('utf-8').split('\r\n')
@@ -42,7 +42,7 @@ class Execution:
 
         return result
     
-    def execution_run():
+    def execution_run(self):
         with open('result.json', 'rt', encoding='utf-8') as f:
             data = json.load(f)
 
@@ -69,7 +69,7 @@ class Execution:
     def get_powershell_policy(self):
         cmd = 'powershell Get-ExecutionPolicy'
         
-        result = command_run(cmd)
+        result = self.command_run(cmd)
 
         result_log = f'[+] {cmd} {result}'
 
@@ -88,7 +88,7 @@ class Execution:
         ]
 
         for idx, cmd in enumerate(cmd_list):
-            result = command_run(cmd)
+            result = self.command_run(cmd)
 
             print(f'[+] {cmd}')
             for i in result:
@@ -106,7 +106,7 @@ class Execution:
             current_time.year, current_time.month, current_time.day, current_time.hour, current_time.minute + 3
         )
 
-        result = command_run(cmd)
+        result = self.command_run(cmd)
 
         print(f'[+] {cmd}')
         for i in result:
@@ -120,7 +120,7 @@ class Execution:
     def T1053_005(self):
         cmd = 'schtasks /query /fo LIST /v'
 
-        result = command_run(cmd)
+        result = self.command_run(cmd)
 
         print(f'[+] {cmd}')
         for i in result:
@@ -136,7 +136,7 @@ class Execution:
 
         if flag:
             for idx, cmd in enumerate(POWERSHELL_COMMAND):
-                result = command_run(cmd)
+                result = self.command_run(cmd)
 
                 print(f'[+] {cmd}')
                 for i in result:
@@ -155,7 +155,7 @@ class Execution:
 
     def T1059_003(self):
         cmd = 'wmic process call create \'calc.exe\''
-        result = command_run(cmd)
+        result = self.command_run(cmd)
 
         print(f'[+] {cmd}')
         for i in result:
@@ -178,7 +178,7 @@ class Execution:
         ]
 
         for cmd in VBA_COTNENT:
-            result = command_run(cmd)
+            result = self.command_run(cmd)
 
             print(f'[+] {cmd}')
             for i in result:
@@ -191,7 +191,7 @@ class Execution:
 
     def T1059_006(self):
         cmd = 'python -c "print(\'A\'*10)"'
-        result = command_run(cmd)
+        result = self.command_run(cmd)
 
         if result[0] == ('A' * 10):
             print(f'[+] {cmd}')
@@ -206,7 +206,7 @@ class Execution:
     def T1569_002(self):
         cmd = 'sc create test type=own binPath="C:\\Windows\\System32\\cmd.exe"'
         
-        result = command_run(cmd)
+        result = self.command_run(cmd)
 
         print(f'[+] {cmd}')
         for i in result:
@@ -224,7 +224,7 @@ class Execution:
         COMMAND_LIST = ['docker ps']
 
         for idx, cmd in enumerate(COMMAND_LIST):
-            result = command_run(cmd)
+            result = self.command_run(cmd)
 
             print(f'[+] {cmd}')
             for i in result:

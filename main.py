@@ -35,7 +35,7 @@ def initial_access_run():
     target = data['info']['server_address']
     ssh = data['info']['services']['ssh']
     telnet = data['info']['services']['telnet']
-    ia = InitialAccess()
+    ia = InitialAccess(target, ssh, telnet)
     ia.initial_access_run()
 
 
