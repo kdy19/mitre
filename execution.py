@@ -33,7 +33,7 @@ class Execution:
     def __init__(self):
         pass
 
-    def self.command_run(cmd):
+    def command_run(self, cmd):
         result = subprocess.Popen(cmd.split(' '), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
         try:
             result = result.decode('utf-8').split('\r\n')
@@ -167,7 +167,7 @@ class Execution:
         }
 
     def T1059_005(self):
-        VBA_COTNENT = [
+        VBA_CONTENT= [
             'echo RUN \'C:\\WINDOWS\\system32\\cmd.exe\' > t1059_005.vba',
             'echo Sub Run (Execute) >> t1059_005.vba',
                 'echo Set wshShell = WScript.CreateObject(\'WScript.Shell\') >> t1059_005.vba',
@@ -177,7 +177,7 @@ class Execution:
             '.\\t1059_005.vba'
         ]
 
-        for cmd in VBA_COTNENT:
+        for cmd in VBA_CONTENT:
             result = self.command_run(cmd)
 
             print(f'[+] {cmd}')
