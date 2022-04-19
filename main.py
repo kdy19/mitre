@@ -1,4 +1,4 @@
-from initial_access import ValidAccounts
+from initial_access import InitialAccess
 from execution import Execution
 
 from winreg import *
@@ -6,7 +6,11 @@ import json
 
 
 def init():
-    result_json = {'result' : {}}
+    result_json = {'result' : {
+        'initial_access_log' : {},
+        'execution_log' : {},
+        'persistence_log' : {}
+    }}
     with open('result.json', 'wt', encoding='utf-8') as f:
         json.dump(result_json, f, indent=4)
 
@@ -31,8 +35,8 @@ def initial_access_run():
     target = data['info']['server_address']
     ssh = data['info']['services']['ssh']
     telnet = data['info']['services']['telnet']
-    va = ValidAccounts(target, ssh, telnet)
-    va.T1078_003()
+    ia = InitialAccess()
+    ia.initial_access_run()
 
 
 def execution_run():

@@ -62,7 +62,7 @@ class Execution:
 
         self.T1609()
 
-        data['result']['execution'] = EXECUTION_LOG
+        data['result']['execution_log'] = EXECUTION_LOG
         with open('result.json', 'wt', encoding='utf-8') as f:
             json.dump(data, f, indent=4)
     

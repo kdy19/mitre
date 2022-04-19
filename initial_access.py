@@ -5,8 +5,8 @@ import socket
 import json
 
 
-USER_LIST = ['root', 'admin', 'test', 'administrator', 'toor']
-PASSWORD_LIST = ['123456', '123456789', 'password', '111111', '123123']
+USER_LIST = ['root']
+PASSWORD_LIST = ['123456', '123456789', 'password']
 INITIAL_ACCESS_LOG =  {
     'T1078_003' : {
         'command' : [],
@@ -15,7 +15,7 @@ INITIAL_ACCESS_LOG =  {
 }
 LOG_TEMP = []
 
-class ValidAccounts:
+class InitialAccess:
 
     def __init__(self, target, ssh, telnet):
         self.target = target
