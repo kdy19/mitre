@@ -32,6 +32,15 @@ class Execution:
 
     def __init__(self):
         pass
+
+    def command_run(cmd):
+        result = subprocess.Popen(cmd.split(' '), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
+        try:
+            result = result.decode('utf-8').split('\r\n')
+        except UnicodeDecodeError as e:
+            result = result.decode('cp949').split('\r\n')
+
+        return result
     
     def execution_run():
         with open('result.json', 'rt', encoding='utf-8') as f:
@@ -59,8 +68,8 @@ class Execution:
     
     def get_powershell_policy(self):
         cmd = 'powershell Get-ExecutionPolicy'
-        result = subprocess.Popen(cmd.split(' '), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-        result = result.decode('utf-8').split('\r\n')[0]
+        
+        result = command_run(cmd)
 
         result_log = f'[+] {cmd} {result}'
 
@@ -79,8 +88,7 @@ class Execution:
         ]
 
         for idx, cmd in enumerate(cmd_list):
-            result = subprocess.Popen(cmd.split(' '), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-            result = result.decode('utf-8').split('\r\n')
+            result = command_run(cmd)
 
             print(f'[+] {cmd}')
             for i in result:
@@ -98,9 +106,9 @@ class Execution:
             current_time.year, current_time.month, current_time.day, current_time.hour, current_time.minute + 3
         )
 
-        result = subprocess.Popen(cmd.split(' '), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-        result = result.decode('utf-8').split('\r\n')
+        result = command_run(cmd)
 
+        print(f'[+] {cmd}')
         for i in result:
             print(i)
             
@@ -112,9 +120,9 @@ class Execution:
     def T1053_005(self):
         cmd = 'schtasks /query /fo LIST /v'
 
-        result = subprocess.Popen(cmd.split(' '), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-        result = result.decode('utf-8').split('\r\n')
+        result = command_run(cmd)
 
+        print(f'[+] {cmd}')
         for i in result:
             print(i)
 
@@ -127,30 +135,29 @@ class Execution:
         flag = self.get_powershell_policy()
 
         if flag:
-            for idx, c in enumerate(POWERSHELL_COMMAND):
-                result = subprocess.Popen(c.split(' '), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-                result = result.decode('utf-8').split('\r\n')
+            for idx, cmd in enumerate(POWERSHELL_COMMAND):
+                result = command_run(cmd)
 
+                print(f'[+] {cmd}')
                 for i in result:
                     print(i)
                 
-                print(f'[+] {c}')
                 EXECUTION_LOG['T1059']['001'][f'{idx + 1}'] = {
-                    'command' : c,
+                    'command' : cmd,
                     'result' : result
                 }
         else:
-            for idx, c in enumerate(POWERSHELL_COMMAND):
-                print(f'[-] {c}')
+            for idx, cmd in enumerate(POWERSHELL_COMMAND):
+                print(f'[-] {cmd}')
                 EXECUTION_LOG['T1059']['001'][f'{idx + 1}'] = {
-                    'command' : c,
+                    'command' : cmd,
                 }
 
     def T1059_003(self):
         cmd = 'wmic process call create \'calc.exe\''
-        result = subprocess.Popen(cmd.split(' '), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-        result = result.decode('utf-8').split('\r\n')
+        result = command_run(cmd)
 
+        print(f'[+] {cmd}')
         for i in result:
             print(i)
         
@@ -170,10 +177,10 @@ class Execution:
             '.\\t1059_005.vba'
         ]
 
-        for c in VBA_COTNENT:
-            result = subprocess.Popen(c.split(' '), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-            result = result.decode('utf-8').split('\r\n')
+        for cmd in VBA_COTNENT:
+            result = command_run(cmd)
 
+            print(f'[+] {cmd}')
             for i in result:
                 print(i)
 
@@ -184,8 +191,7 @@ class Execution:
 
     def T1059_006(self):
         cmd = 'python -c "print(\'A\'*10)"'
-        result = subprocess.Popen(cmd.split(' '), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-        result = result.deocde('utf-8').split('\r\n')
+        result = command_run(cmd)
 
         if result[0] == ('A' * 10):
             print(f'[+] {cmd}')
@@ -198,11 +204,11 @@ class Execution:
         }
 
     def T1569_002(self):
-        cmd = 'sc create test type=own binPath="C:\Windows\System32\cmd.exe'
+        cmd = 'sc create test type=own binPath="C:\\Windows\\System32\\cmd.exe"'
         
-        result = subprocess.Popen(cmd.split(' '), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-        result = result.decode('utf-8').split('\r\n')
+        result = command_run(cmd)
 
+        print(f'[+] {cmd}')
         for i in result:
             print(i)
 
@@ -218,9 +224,9 @@ class Execution:
         COMMAND_LIST = ['docker ps']
 
         for idx, cmd in enumerate(COMMAND_LIST):
-            result = subprocess.Popen(cmd.split(' '), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-            result = result.decode('utf-8').split('\r\n')
+            result = command_run(cmd)
 
+            print(f'[+] {cmd}')
             for i in result:
                 print(i)
     
