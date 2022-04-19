@@ -1,8 +1,27 @@
 from initial_access import ValidAccounts
-from execution import CommandAndScripting
 from execution import Execution
 
+from winreg import *
 import json
+
+
+def init():
+    result_json = {'result' : {}}
+    with open('result.json', 'wt', encoding='utf-8') as f:
+        json.dump(result_json, f, indent=4)
+
+    PATH = 'SYSTEM\\CurrentControlSet\\Control\\Nls\\CodePage'
+    reg_handle = ConnectRegistry(None, HKEY_LOCAL_MACHINE)
+    try:
+        key = OpenKey(reg_handle, PATH, 0, KEY_WRITE)
+        try:
+            SetValueEx(key, 'OEMCP', 0, REG_DWORD, '65001')
+            CloseKey(key)
+            CloseKey(reg_handle)
+        except Exception as e:
+            print(e)
+    except Exception as e:
+        print(e)
 
 
 def initial_access_run():
@@ -17,27 +36,12 @@ def initial_access_run():
 
 
 def execution_run():
-    cas = CommandAndScripting()
-    cas.T1059_001()
-    cas.T1059_003()
-    cas.T1059_005()
-    cas.T1059_006()
-
     exe = Execution()
-
-    exe.T1047()
-
-    exe.T1053_002()
-    exe.T1053_005()
-
-    exe.T1569_002()
-
-    exe.T1599_001()
-    
-    exe.T1609()
+    exe.execution_run()
 
 
 def main():
+    init()
     initial_access_run()
     execution_run() 
 

