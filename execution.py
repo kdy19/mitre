@@ -221,7 +221,10 @@ class Execution:
         pass
 
     def T1609(self):
-        COMMAND_LIST = ['docker ps']
+        COMMAND_LIST = [
+            'docker ps',
+            'docker ps -a'
+        ]
 
         for idx, cmd in enumerate(COMMAND_LIST):
             result = self.command_run(cmd)

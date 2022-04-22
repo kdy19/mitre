@@ -8,9 +8,11 @@ import json
 USER_LIST = ['root']
 PASSWORD_LIST = ['123456', '123456789', 'password']
 INITIAL_ACCESS_LOG =  {
-    'T1078_003' : {
-        'command' : [],
-        'result' : []
+    'T1078' : {
+        '003' : {
+            'command' : [],
+            'result' : []
+        }
     },
 }
 LOG_TEMP = []
@@ -28,7 +30,7 @@ class InitialAccess:
 
         self.T1078_003() 
         
-        INITIAL_ACCESS_LOG['T1078_003']['result'] = LOG_TEMP
+        INITIAL_ACCESS_LOG['T1078']['003']['result'] = LOG_TEMP
         data['result']['initial_access_log'] = INITIAL_ACCESS_LOG
         with open('result.json', 'wt', encoding='utf-8') as f:
             json.dump(data, f, indent=4)

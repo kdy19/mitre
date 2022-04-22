@@ -6,9 +6,14 @@ class Persistence:
     def __init__(self):
         pass
 
+    def persistence_run(self):
+        self.T1136_001()
+
+
     def T1136_001(self):
         cmd_list = [
             'net user t1136_001 P@assw0rd! /add',
+            'net user',
             'net user t1136_001 /active:no'
         ]
 
