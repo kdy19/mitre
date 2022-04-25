@@ -48,6 +48,7 @@ class Persistence:
         self.T1547_001()
         self.T1547_003()
 
+        data['result']['persistence_log'] = PERSISTENCE_LOG
         with open('result.json', 'wt', encoding='utf-8') as f:
             json.dump(data, f, indent=4)
 
@@ -61,7 +62,7 @@ class Persistence:
         for idx, cmd in enumerate(cmd_list):
             result = self.command_run(cmd)
 
-            PERSISTENCE_LOG['T1136'][f'{idx + 1}'] = {
+            PERSISTENCE_LOG['T1136']['001'][f'{idx + 1}'] = {
                 'command' : cmd,
                 'result' : result
             }
@@ -84,7 +85,7 @@ class Persistence:
         for idx, cmd in cmd_list:
             result = self.command_run(cmd)
 
-            PERSISTENCE_LOG['T1547'][f'{idx + 1}'] = {
+            PERSISTENCE_LOG['T1547']['001'][f'{idx + 1}'] = {
                 'command' : cmd,
                 'result' : result
             }
