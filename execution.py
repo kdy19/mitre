@@ -40,6 +40,11 @@ class Execution:
         except UnicodeDecodeError as e:
             result = result.decode('cp949').split('\r\n')
 
+        print(f'[+] {cmd}')
+        for i in result:
+            print(i)
+        print()
+
         return result
     
     def execution_run(self):
@@ -90,11 +95,6 @@ class Execution:
         for idx, cmd in enumerate(cmd_list):
             result = self.command_run(cmd)
 
-            print(f'[+] {cmd}')
-            for i in result:
-                print(i)
-            print()
-
             EXECUTION_LOG['T1047'][f'{idx + 1}'] = {
                 'command' : cmd,
                 'result' : result
@@ -108,10 +108,6 @@ class Execution:
 
         result = self.command_run(cmd)
 
-        print(f'[+] {cmd}')
-        for i in result:
-            print(i)
-            
         EXECUTION_LOG['T1053']['002'] = {
             'command' : cmd,
             'result' : result
@@ -121,10 +117,6 @@ class Execution:
         cmd = 'schtasks /query /fo LIST /v'
 
         result = self.command_run(cmd)
-
-        print(f'[+] {cmd}')
-        for i in result:
-            print(i)
 
         EXECUTION_LOG['T1053']['005'] = {
             'command' : cmd,
@@ -138,10 +130,6 @@ class Execution:
             for idx, cmd in enumerate(POWERSHELL_COMMAND):
                 result = self.command_run(cmd)
 
-                print(f'[+] {cmd}')
-                for i in result:
-                    print(i)
-                
                 EXECUTION_LOG['T1059']['001'][f'{idx + 1}'] = {
                     'command' : cmd,
                     'result' : result
@@ -157,10 +145,6 @@ class Execution:
         cmd = 'wmic process call create \'calc.exe\''
         result = self.command_run(cmd)
 
-        print(f'[+] {cmd}')
-        for i in result:
-            print(i)
-        
         EXECUTION_LOG['T1059']['003'] = {
             'command' : cmd,
             'result' : result
@@ -179,10 +163,6 @@ class Execution:
 
         for cmd in VBA_CONTENT:
             result = self.command_run(cmd)
-
-            print(f'[+] {cmd}')
-            for i in result:
-                print(i)
 
         EXECUTION_LOG['T1059']['005'] = {
             'command' : VBA_CONTENT,
@@ -208,10 +188,6 @@ class Execution:
         
         result = self.command_run(cmd)
 
-        print(f'[+] {cmd}')
-        for i in result:
-            print(i)
-
         EXECUTION_LOG['T1569']['002'] = {
             'command' : cmd,
             'result' : result
@@ -229,10 +205,6 @@ class Execution:
         for idx, cmd in enumerate(COMMAND_LIST):
             result = self.command_run(cmd)
 
-            print(f'[+] {cmd}')
-            for i in result:
-                print(i)
-    
             EXECUTION_LOG['T1609'][f'{idx + 1}'] = {
                 'command' : cmd,
                 'result' : result
