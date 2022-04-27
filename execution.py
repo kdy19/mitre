@@ -4,6 +4,7 @@ import json
 import os
 
 
+# 10
 POWERSHELL_COMMAND = [
     'echo Get-ExecutionPolicy > t1059_001.ps1 && powershell .\\t1059_001.ps1'
 ]

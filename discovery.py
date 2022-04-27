@@ -3,7 +3,9 @@ import json
 import os
 
 
+# 24
 DISCOVERY_LOG = {
+    'T1007' : {},
     'T1010' : {},
     'T1012' : {},
     'T1016' : {},
@@ -22,6 +24,7 @@ DISCOVERY_LOG = {
         '002' : {}
     },
     'T1120' : {},
+    'T1124' : {},
     'T1135' : {},
     'T1201' : {},
     'T1217' : {
@@ -60,6 +63,8 @@ class Discovery:
         with open('result.json', 'rt', encoding='utf-8') as f:
             data = json.load(f)
 
+        self.T1007()
+
         self.T1010()
 
         self.T1012()
@@ -86,6 +91,8 @@ class Discovery:
 
         self.T1120()
 
+        self.T1124()
+
         self.T1135()
 
         self.T1201()
@@ -103,6 +110,20 @@ class Discovery:
         data['result']['discovery_log'] = DISCOVERY_LOG
         with open('result.json', 'wt', encoding='utf-8') as f:
             json.dump(data, f, indent=4)
+        
+    def T1007(self):
+        cmd_list = [
+            'tasklist /svc',
+            'net start'
+        ]
+
+        for idx, cmd in cmd_list:
+            result = self.command_run(cmd)
+
+            DISCOVERY_LOG['T1007'][f'{idx + 1}'] = {
+                'command' : cmd,
+                'result' : result
+            }
     
     def T1010(self):
         cmd = 'get-process | where-object {$_.mainwindowtitle -ne ""} | Select-Object mainwindowtitle'
@@ -232,6 +253,15 @@ class Discovery:
         result = self.command_run(cmd)
 
         DISCOVERY_LOG['T1120'] = {
+            'command' : cmd,
+            'result' : result
+        }
+    
+    def T1124(self):
+        cmd = 'w32tm /tz'
+        result = self.command_run(cmd)
+
+        DISCOVERY_LOG['T1124'] = {
             'command' : cmd,
             'result' : result
         }

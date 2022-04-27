@@ -1,6 +1,7 @@
 import subprocess
 
 
+# 10
 PERSISTENCE_LOG = {
     'T1136' : {
         '001' : {}
@@ -8,6 +9,7 @@ PERSISTENCE_LOG = {
     'T1137' : {
         '002' : {}
     },
+    'T1197' : {},
     'T1547' : {
         '001' : {},
         '003' : {},
@@ -45,6 +47,8 @@ class Persistence:
 
         self.T1137_002()
 
+        self.T1197()
+
         self.T1547_001()
         self.T1547_003()
 
@@ -72,6 +76,15 @@ class Persistence:
         result = self.command_run(cmd)
 
         PERSISTENCE_LOG['T1137']['002'] = {
+            'command' : cmd,
+            'result' : result
+        }
+
+    def T1197(self):
+        cmd = 'sc query bits'
+        result = self.command_run(cmd)
+
+        PERSISTENCE_LOG['T1197'] = {
             'command' : cmd,
             'result' : result
         }
